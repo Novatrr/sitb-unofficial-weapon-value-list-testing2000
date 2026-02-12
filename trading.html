@@ -1,28 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trading Mode</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>Trading Mode</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'VCR', monospace;
-      background: linear-gradient(
-        to bottom,
-        #f7f9c4 0%,
-        #e8ef9a 40%,
-        #cddc7a 70%,
-        #b6cc63 100%
-      );
-      background-attachment: fixed;
-    }
-  </style>
+/* ===== FONT ===== */
+@font-face {
+  font-family: 'VCR';
+  src: url('./VCR_OSD_MONO_1.001.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: 'VCR', monospace;
+  background: linear-gradient(to bottom,#f7f9c4,#cddc7a);
+}
+
+.return-btn {
+  position: absolute;
+  top: 35px;
+  left: 70px;
+  background: #111;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.return-btn:hover {
+  background: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 80px auto 40px auto;
+}
+
+h1 {
+  text-align: center;
+  font-size: 48px;
+  margin-bottom: 50px;
+}
+
+.trade-area {
+  display: flex;
+  gap: 40px;
+}
+
+.trade-box {
+  flex: 1;
+  background: rgba(0,0,0,0.85);
+  border-radius: 25px;
+  padding: 25px;
+  height: 450px;
+  overflow-y: auto;
+  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+}
+
+.trade-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.trade-box::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.08);
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.item-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-btn {
+  background: #222;
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.qty-btn:hover {
+  background: #444;
+}
+
+.add-btn {
+  margin-top: 15px;
+  padding: 12px;
+  background: #1c1c1c;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+}
+
+.add-btn:hover {
+  background: #333;
+}
+
+.search-popup {
+  margin-top: 10px;
+}
+
+.search-popup input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'VCR';
+}
+
+.search-results {
+  margin-top: 5px;
+  background: #111;
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.search-results div {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.search-results div:hover {
+  background: #333;
+}
+
+.summary-area {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.total-box {
+  background: #111;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  color: white;
+  min-width: 120px;
+  text-align: center;
+}
+
+.middle-result {
+  width: 90px;
+  height: 90px;
+  background: #111;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  color: white;
+}
+
+.no-items {
+  color: #aaa;
+  padding: 6px 10px;
+}
+
+</style>
 </head>
 <body>
+
+<a href="index.html" class="return-btn">&lt; RETURN</a>
+
+<div class="container">
+
+<h1>Trading Mode</h1>
+
+<div class="trade-area">
+  <div class="trade-box" id="leftBox"></div>
+  <div class="trade-box" id="rightBox"></div>
+</div>
+
+<div class="summary-area">
+  <div class="total-box" id="leftTotal">Total: 0</div>
+  <div class="middle-result" id="resultBox">F</div>
+  <div class="total-box" id="rightTotal">Total: 0</div>
+</div>
+
+</div>
+
+<script>
+
+const ITEMS = JSON.parse(localStorage.getItem("tradeItems")) || [];
+
+function createTradeBox(boxId) {
+  const box = document.getElementById(boxId);
+  const items = [];
+
+  function updateTotals() {
+    let total = items.reduce((sum, i) => sum + i.value * i.qty, 0);
+    document.getElementById(boxId === "leftBox" ? "leftTotal" : "rightTotal")
+      .innerText = "Total: " + total;
+
+    updateResult();
+  }
+
+  function updateResult() {
+    const left = parseInt(document.getElementById("leftTotal").innerText.replace("Total: ",""));
+    const right = parseInt(document.getElementById("rightTotal").innerText.replace("Total: ",""));
+
+    const result = document.getElementById("resultBox");
+
+    if (left > right) result.innerText = "W";
+    else if (left < right) result.innerText = "L";
+    else result.innerText = "F";
+  }
+
+  function render() {
+    box.innerHTML = "";
+
+    items.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "item";
+
+      div.innerHTML = `
+        <span>${item.name}</span>
+        <div class="item-controls">
+          <button class="qty-btn">▲</button>
+          <span>${item.qty}x</span>
+          <button class="qty-btn">▼</button>
+          <span>${item.qty * item.value}</span>
+        </div>
+      `;
+
+      const buttons = div.querySelectorAll(".qty-btn");
+      const upBtn = buttons[0];
+      const downBtn = buttons[1];
+
+      upBtn.onclick = () => {
+        item.qty++;
+        render();
+        updateTotals();
+      };
+
+      downBtn.onclick = () => {
+        item.qty--;
+        if (item.qty <= 0) {
+          items.splice(items.indexOf(item),1);
+        }
+        render();
+        updateTotals();
+      };
+
+      box.appendChild(div);
+    });
+
+    const addBtn = document.createElement("div");
+    addBtn.className = "add-btn";
+    addBtn.innerText = "Add +";
+    addBtn.onclick = showSearch;
+    box.appendChild(addBtn);
+  }
+
+  function showSearch() {
+    const popup = document.createElement("div");
+    popup.className = "search-popup";
+
+    popup.innerHTML = `
+      <input type="text" placeholder="Search item...">
+      <div class="search-results"></div>
+    `;
+
+    const input = popup.querySelector("input");
+    const results = popup.querySelector(".search-results");
+
+    input.oninput = () => {
+      const val = input.value.toLowerCase();
+      results.innerHTML = "";
+
+      const filtered = ITEMS.filter(i =>
+        i.name.toLowerCase().includes(val) &&
+        !items.some(it => it.name === i.name)
+      );
+
+      if (!filtered.length) {
+        results.innerHTML = "<div class='no-items'>No items found</div>";
+      } else {
+        filtered.forEach(i => {
+          const div = document.createElement("div");
+          div.innerText = i.name;
+          div.onclick = () => {
+            items.push({...i, qty:1});
+            render();
+            updateTotals();
+          };
+          results.appendChild(div);
+        });
+      }
+    };
+
+    box.appendChild(popup);
+  }
+
+  render();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const ITEMS = JSON.parse(localStorage.getItem("tradeItems")) || [];
+  console.log("Loaded items:", ITEMS);
+
+  if (!ITEMS.length) {
+    console.warn("No items in storage.");
+  }
+
+  function createTradeBox(boxId) {
+    const box = document.getElementById(boxId);
+    const items = [];
+
+    function updateTotals() {
+      let total = items.reduce((sum, i) => sum + i.value * i.qty, 0);
+      document.getElementById(boxId === "leftBox" ? "leftTotal" : "rightTotal")
+        .innerText = "Total: " + total;
+
+      updateResult();
+    }
+
+    function updateResult() {
+      const left = parseInt(document.getElementById("leftTotal").innerText.replace("Total: ",""));
+      const right = parseInt(document.getElementById("rightTotal").innerText.replace("Total: ",""));
+      const result = document.getElementById("resultBox");
+
+      if (left > right) result.innerText = "W";
+      else if (left < right) result.innerText = "L";
+      else result.innerText = "F";
+    }
+
+    function render() {
+      box.innerHTML = "";
+
+      items.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "item";
+
+        div.innerHTML = `
+          <span>${item.name}</span>
+          <div class="item-controls">
+            <button class="qty-btn">▲</button>
+            <span>${item.qty}x</span>
+            <button class="qty-btn">▼</button>
+            <span>${item.qty * item.value}</span>
+          </div>
+        `;
+
+        const buttons = div.querySelectorAll(".qty-btn");
+        const upBtn = buttons[0];
+        const downBtn = buttons[1];
+
+        upBtn.onclick = () => {
+          item.qty++;
+          render();
+          updateTotals();
+        };
+
+        downBtn.onclick = () => {
+          item.qty--;
+          if (item.qty <= 0) {
+            items.splice(items.indexOf(item),1);
+          }
+          render();
+          updateTotals();
+        };
+
+        box.appendChild(div);
+      });
+
+      const addBtn = document.createElement("div");
+      addBtn.className = "add-btn";
+      addBtn.innerText = "Add +";
+      addBtn.onclick = showSearch;
+      box.appendChild(addBtn);
+    }
+
+    function showSearch() {
+      const popup = document.createElement("div");
+      popup.className = "search-popup";
+
+      popup.innerHTML = `
+        <input type="text" placeholder="Search item...">
+        <div class="search-results"></div>
+      `;
+
+      const input = popup.querySelector("input");
+      const results = popup.querySelector(".search-results");
+
+      input.oninput = () => {
+        const val = input.value.toLowerCase();
+        results.innerHTML = "";
+
+        const filtered = ITEMS.filter(i =>
+          i.name.toLowerCase().includes(val) &&
+          !items.some(it => it.name === i.name)
+        );
+
+        if (!filtered.length) {
+          results.innerHTML = "<div class='no-items'>No items found</div>";
+        } else {
+          filtered.forEach(i => {
+            const div = document.createElement("div");
+            div.innerText = i.name;
+            div.style.color = "white";
+            div.onclick = () => {
+              items.push({...i, qty:1});
+              render();
+              updateTotals();
+            };
+            results.appendChild(div);
+          });
+        }
+      };
+
+      box.appendChild(popup);
+    }
+
+    render();
+  }
+
+  createTradeBox("leftBox");
+  createTradeBox("rightBox");
+
+});
+</script>
 
 </body>
 </html>
