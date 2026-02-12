@@ -62,6 +62,16 @@ h1 {
   box-shadow: 0 0 25px rgba(0,0,0,0.4);
 }
 
+  .trade-title {
+  background: rgba(255,255,255,0.08);
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
 .trade-box::-webkit-scrollbar {
   width: 8px;
 }
@@ -240,6 +250,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function render() {
       box.innerHTML = "";
 
+      const title = document.createElement("div");
+      title.className = "trade-title";
+      title.innerText = boxId === "leftBox"
+        ? "Your Trades"
+        : "Their Trades";
+      
+      box.appendChild(title);
+
       items.forEach(item => {
         const div = document.createElement("div");
         div.className = "item";
@@ -365,6 +383,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
