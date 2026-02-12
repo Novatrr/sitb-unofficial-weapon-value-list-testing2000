@@ -72,7 +72,7 @@ const ITEMS = [
   { name: "Christmas Shotgun", type: "Weapon", rarity: 19, power: 18, image: "" },
   { name: "Baseball Bat", type: "Weapon", rarity: 13, power: 12, image: "" },
   { name: "Merry Pistol", type: "Weapon", rarity: 7, power: 15, image: "" },
-  { name: "TikeCoupe", type: "Tool", rarity: 11, power: 23, image: "images/tike.jpg" },
+  { name: "TikeCoupe", type: "Tool", rarity: 11, power: 23, image: "images/tyke.jpg" },
   { name: "Cappuccino", type: "Tool", rarity: 12, power: 18, image: "images/cappuccino.jpg" },
   { name: "Frosty Fury", type: "Weapon", rarity: 7, power: 12, image: "" },
   { name: "Candy Wacker", type: "Weapon", rarity: 7, power: 12, image: "" },
@@ -203,3 +203,4 @@ const ITEMS = [
   { name: "Boombox", type: "Tool", rarity: 0, power: 5, image: "images/boombox.jpg" }
 ];
   
+
