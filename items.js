@@ -108,7 +108,7 @@ const ITEMS = [
   { name: "Bubble Gun", type: "Weapon", rarity: 22, power: 33, image: "" },
   { name: "Gingerbread Box", type: "Tool", rarity: 20, power: 20, image: "images/gingerbread_box.jpg" },
   { name: "Staple Gun", type: "Weapon", rarity: 22, power: 15, image: "" },
-  { name: "PumpkinCreature_MorphPotion / Enchanted Potion", type: "Tool", rarity: 25, power: 30, image: "images/enchanted_potion.jpg" },
+  { name: "Enchanted Potion", type: "Tool", rarity: 25, power: 30, image: "images/enchanted_potion.jpg" },
   { name: "2025 Shrekmas Gift #9", type: "Tool", rarity: 18, power: 10, image: "images/2025_9.jpg" },
   { name: "Grenade Launcher", type: "Weapon", rarity: 25, power: 45, image: "" },
   { name: "Keyboard", type: "Weapon", rarity: 20, power: 12, image: "" },
@@ -203,4 +203,5 @@ const ITEMS = [
   { name: "Boombox", type: "Tool", rarity: 0, power: 5, image: "images/boombox.jpg" }
 ];
   
+
 
