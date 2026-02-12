@@ -7,7 +7,6 @@
 
 <style>
 
-/* ===== FONT ===== */
 @font-face {
   font-family: 'VCR';
   src: url('./VCR_OSD_MONO_1.001.ttf') format('truetype');
@@ -201,140 +200,22 @@ h1 {
 </div>
 
 </div>
-
+  
+<script src="items.js"></script>
 <script>
 
-const ITEMS = JSON.parse(localStorage.getItem("tradeItems")) || [];
-
-function createTradeBox(boxId) {
-  const box = document.getElementById(boxId);
-  const items = [];
-
-  function updateTotals() {
-    let total = items.reduce((sum, i) => sum + i.value * i.qty, 0);
-    document.getElementById(boxId === "leftBox" ? "leftTotal" : "rightTotal")
-      .innerText = "Total: " + total;
-
-    updateResult();
-  }
-
-  function updateResult() {
-    const left = parseInt(document.getElementById("leftTotal").innerText.replace("Total: ",""));
-    const right = parseInt(document.getElementById("rightTotal").innerText.replace("Total: ",""));
-
-    const result = document.getElementById("resultBox");
-
-    if (left > right) result.innerText = "W";
-    else if (left < right) result.innerText = "L";
-    else result.innerText = "F";
-  }
-
-  function render() {
-    box.innerHTML = "";
-
-    items.forEach(item => {
-      const div = document.createElement("div");
-      div.className = "item";
-
-      div.innerHTML = `
-        <span>${item.name}</span>
-        <div class="item-controls">
-          <button class="qty-btn">▲</button>
-          <span>${item.qty}x</span>
-          <button class="qty-btn">▼</button>
-          <span>${item.qty * item.value}</span>
-        </div>
-      `;
-
-      const buttons = div.querySelectorAll(".qty-btn");
-      const upBtn = buttons[0];
-      const downBtn = buttons[1];
-
-      upBtn.onclick = () => {
-        item.qty++;
-        render();
-        updateTotals();
-      };
-
-      downBtn.onclick = () => {
-        item.qty--;
-        if (item.qty <= 0) {
-          items.splice(items.indexOf(item),1);
-        }
-        render();
-        updateTotals();
-      };
-
-      box.appendChild(div);
-    });
-
-    const addBtn = document.createElement("div");
-    addBtn.className = "add-btn";
-    addBtn.innerText = "Add +";
-    addBtn.onclick = showSearch;
-    box.appendChild(addBtn);
-  }
-
-  function showSearch() {
-    const popup = document.createElement("div");
-    popup.className = "search-popup";
-
-    popup.innerHTML = `
-      <input type="text" placeholder="Search item...">
-      <div class="search-results"></div>
-    `;
-
-    const input = popup.querySelector("input");
-    const results = popup.querySelector(".search-results");
-
-    input.oninput = () => {
-      const val = input.value.toLowerCase();
-      results.innerHTML = "";
-
-      const filtered = ITEMS.filter(i =>
-        i.name.toLowerCase().includes(val) &&
-        !items.some(it => it.name === i.name)
-      );
-
-      if (!filtered.length) {
-        results.innerHTML = "<div class='no-items'>No items found</div>";
-      } else {
-        filtered.forEach(i => {
-          const div = document.createElement("div");
-          div.innerText = i.name;
-          div.onclick = () => {
-            items.push({...i, qty:1});
-            render();
-            updateTotals();
-          };
-          results.appendChild(div);
-        });
-      }
-    };
-
-    box.appendChild(popup);
-  }
-
-  render();
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-
-  const ITEMS = JSON.parse(localStorage.getItem("tradeItems")) || [];
-  console.log("Loaded items:", ITEMS);
-
-  if (!ITEMS.length) {
-    console.warn("No items in storage.");
-  }
 
   function createTradeBox(boxId) {
     const box = document.getElementById(boxId);
     const items = [];
 
     function updateTotals() {
-      let total = items.reduce((sum, i) => sum + i.value * i.qty, 0);
-      document.getElementById(boxId === "leftBox" ? "leftTotal" : "rightTotal")
-        .innerText = "Total: " + total;
+      const total = items.reduce((sum, i) => sum + i.value * i.qty, 0);
+
+      document.getElementById(
+        boxId === "leftBox" ? "leftTotal" : "rightTotal"
+      ).innerText = "Total: " + total;
 
       updateResult();
     }
@@ -379,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
         downBtn.onclick = () => {
           item.qty--;
           if (item.qty <= 0) {
-            items.splice(items.indexOf(item),1);
+            items.splice(items.indexOf(item), 1);
           }
           render();
           updateTotals();
@@ -423,11 +304,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const div = document.createElement("div");
             div.innerText = i.name;
             div.style.color = "white";
+
             div.onclick = () => {
-              items.push({...i, qty:1});
+
+              // ✅ VALUE CALCULATION (Step 4)
+              const computedValue = Math.round(
+                (Math.pow(i.rarity, 3) * Math.pow(i.power, 1.5)) / 1000
+              );
+
+              items.push({
+                ...i,
+                value: computedValue,
+                qty: 1
+              });
+
               render();
               updateTotals();
             };
+
             results.appendChild(div);
           });
         }
@@ -443,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
   createTradeBox("rightBox");
 
 });
-</script>
 
+</script>
 </body>
 </html>
