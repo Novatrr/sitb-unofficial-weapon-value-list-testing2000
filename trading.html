@@ -210,24 +210,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const box = document.getElementById(boxId);
     const items = [];
 
-    function updateTotals() {
-      const total = items.reduce((sum, i) => sum + i.value * i.qty, 0);
-
-      document.getElementById(
-        boxId === "leftBox" ? "leftTotal" : "rightTotal"
-      ).innerText = "Total: " + total;
-
-      updateResult();
-    }
+  function updateTotals() {
+    const total = items.reduce((sum, i) => sum + i.value * i.qty, 0);
+  
+    const totalElement = document.getElementById(
+      boxId === "leftBox" ? "leftTotal" : "rightTotal"
+    );
+  
+    totalElement.innerText = "Total: " + formatNumber(total);
+  
+    updateResult();
+  }
 
     function updateResult() {
-      const left = parseInt(document.getElementById("leftTotal").innerText.replace("Total: ",""));
-      const right = parseInt(document.getElementById("rightTotal").innerText.replace("Total: ",""));
+      const left = getRawTotal("leftTotal");
+      const right = getRawTotal("rightTotal");
       const result = document.getElementById("resultBox");
-
-      if (left > right) result.innerText = "W";
-      else if (left < right) result.innerText = "L";
+    
+      if (right > left) result.innerText = "W";
+      else if (left > right) result.innerText = "L";
       else result.innerText = "F";
+    }
+
+    function formatNumber(num) {
+      return num.toLocaleString();
     }
 
     function render() {
@@ -276,68 +282,79 @@ document.addEventListener("DOMContentLoaded", () => {
       box.appendChild(addBtn);
     }
 
-    function showSearch() {
-      const popup = document.createElement("div");
-      popup.className = "search-popup";
-
-      popup.innerHTML = `
-        <input type="text" placeholder="Search item...">
-        <div class="search-results"></div>
-      `;
-
-      const input = popup.querySelector("input");
-      const results = popup.querySelector(".search-results");
-
-      input.oninput = () => {
-        const val = input.value.toLowerCase();
-        results.innerHTML = "";
-
-        const filtered = ITEMS.filter(i =>
-          i.name.toLowerCase().includes(val) &&
-          !items.some(it => it.name === i.name)
-        );
-
-        if (!filtered.length) {
-          results.innerHTML = "<div class='no-items'>No items found</div>";
-        } else {
-          filtered.forEach(i => {
-            const div = document.createElement("div");
-            div.innerText = i.name;
-            div.style.color = "white";
-
-            div.onclick = () => {
-
-              // ✅ VALUE CALCULATION (Step 4)
-              const computedValue = Math.round(
-                (Math.pow(i.rarity, 3) * Math.pow(i.power, 1.5)) / 1000
-              );
-
-              items.push({
-                ...i,
-                value: computedValue,
-                qty: 1
-              });
-
-              render();
-              updateTotals();
-            };
-
-            results.appendChild(div);
-          });
-        }
-      };
-
-      box.appendChild(popup);
+    function getRawTotal(id) {
+      return parseInt(
+        document.getElementById(id)
+          .innerText
+          .replace("Total: ", "")
+          .replace(/,/g, "")
+      );
     }
 
-    render();
+  function showSearch() {
+  const existing = box.querySelector(".search-popup");
+
+  if (existing) {
+    existing.remove();
+    return;
   }
 
-  createTradeBox("leftBox");
-  createTradeBox("rightBox");
+  const popup = document.createElement("div");
+  popup.className = "search-popup";
+
+  popup.innerHTML = `
+    <input type="text" placeholder="Search item...">
+    <div class="search-results"></div>
+  `;
+
+  const input = popup.querySelector("input");
+  const results = popup.querySelector(".search-results");
+
+  input.oninput = () => {
+    const val = input.value.toLowerCase();
+    results.innerHTML = "";
+
+    const filtered = ITEMS.filter(i =>
+      i.name.toLowerCase().includes(val) &&
+      !items.some(it => it.name === i.name)
+    );
+
+    if (!filtered.length) {
+      results.innerHTML = "<div class='no-items'>No items found</div>";
+    } else {
+      filtered.forEach(i => {
+        const div = document.createElement("div");
+        div.innerText = i.name;
+        div.style.color = "white";
+
+        div.onclick = () => {
+
+          const computedValue = Math.round(
+            (Math.pow(i.rarity, 3) * Math.pow(i.power, 1.5)) / 1000
+          );
+
+          items.push({
+            ...i,
+            value: computedValue,
+            qty: 1
+          });
+
+          popup.remove(); // close after selecting
+          render();
+          updateTotals();
+        };
+
+        results.appendChild(div);
+      });
+    }
+  };
+
+  box.appendChild(popup);
+}
 
 });
 
 </script>
 </body>
 </html>
+
