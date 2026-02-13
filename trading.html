@@ -234,15 +234,32 @@ document.addEventListener("DOMContentLoaded", () => {
     updateResult();
   }
 
-    function updateResult() {
-      const left = getRawTotal("leftTotal");
-      const right = getRawTotal("rightTotal");
-      const result = document.getElementById("resultBox");
-    
-      if (right > left) result.innerText = "W";
-      else if (left > right) result.innerText = "L";
-      else result.innerText = "F";
-    }
+function updateResult() {
+  const left = getRawTotal("leftTotal");
+  const right = getRawTotal("rightTotal");
+  const result = document.getElementById("resultBox");
+
+  if (left === 0 && right === 0) {
+    result.innerText = "F";
+    return;
+  }
+
+  const lowerBound = left * 0.95;  // -5%
+  const upperBound = left * 1.05;  // +5%
+
+  if (right >= lowerBound && right <= upperBound) {
+    result.innerText = "F";
+    result.style.color = "#ffffff"
+  } 
+  else if (right > upperBound) {
+    result.innerText = "W";
+    result.style.color = "#4caf50";
+  } 
+  else {
+    result.innerText = "L";
+    result.style.color = "#ff5252"; 
+  }
+}
 
     function formatNumber(num) {
       return num.toLocaleString();
@@ -384,10 +401,4 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
 
