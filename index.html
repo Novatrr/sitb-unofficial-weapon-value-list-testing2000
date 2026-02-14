@@ -567,13 +567,15 @@ function applyFilters() {
         row.classList.add(index % 2 === 0 ? "row-odd" : "row-even");
     });
 
+    if (noResultsRow) {
     noResultsRow.style.display = visibleRows.length === 0 ? "" : "none";
+    }
     
     applyZebraStriping();
     }
 
       function exportItemsToStorage() {
-    const items = ITEMS.map(item => {
+        const items = ITEMS.map(item => {
         const baseValue = (Math.pow(item.rarity, 3) * Math.pow(item.power, 1.5)) / 1000;
         const multiplier = item.multiplier ?? 1;
         const totalValue = Math.round(baseValue * multiplier);
@@ -631,6 +633,7 @@ function searchTable() {
     </div>
 </body>
 </html> 
+
 
 
 
