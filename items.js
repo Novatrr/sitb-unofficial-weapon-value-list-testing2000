@@ -193,6 +193,7 @@ const ITEMS = [
   { name: "George Blastington", type: "Weapon", rarity: 95, power: 47, image: "images/george.jpg" },
   { name: "10Christmas2024", type: "Tool", rarity: 87, power: 15, image: "images/2024_10.png" },
   { name: "Spark Thrower", type: "Weapon", rarity: 100, power: 25, image: "images/spark_thrower.jpg" },
-  { name: "Liberty Launcher", type: "Weapon", rarity: 100, power: 45, image: "images/LL.jpg" },
+  { name: "Liberty Launcher", type: "Weapon", rarity: 100, power: 45, multiplier: 1.5, image: "images/LL.jpg" },
   { name: "Boombox", type: "Tool", rarity: 0, power: 5, image: "images/boombox.jpg" }
 ];
+
