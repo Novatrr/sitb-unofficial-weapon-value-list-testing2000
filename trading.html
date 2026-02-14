@@ -366,9 +366,9 @@ function updateResult() {
 
         div.onclick = () => {
 
-          const computedValue = Math.round(
-            (Math.pow(i.rarity, 3) * Math.pow(i.power, 1.5)) / 1000
-          );
+          const baseValue = (Math.pow(i.rarity, 3) * Math.pow(i.power, 1.5)) / 1000;
+          const multiplier = i.multiplier ?? 1;
+          const computedValue = Math.round(baseValue * multiplier);
 
           items.push({
             ...i,
@@ -401,4 +401,5 @@ function updateResult() {
 </script>
 </body>
 </html>
+
 
