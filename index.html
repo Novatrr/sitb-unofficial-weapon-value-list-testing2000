@@ -475,9 +475,9 @@ function generateTable() {
 
     ITEMS.forEach((item, index) => {
 
-        const totalValue = Math.round(
-            (Math.pow(item.rarity, 3) * Math.pow(item.power, 1.5)) / 1000
-        );
+        const baseValue = (Math.pow(item.rarity, 3) * Math.pow(item.power, 1.5)) / 1000;
+        const multiplier = item.multiplier || 1;
+        const totalValue = Math.round(baseValue * multiplier);
 
         const row = document.createElement("tr");
 
@@ -488,7 +488,10 @@ function generateTable() {
         row.innerHTML = `
             <td>#</td>
             <td class="item-cell">
-                <span class="item-name">${item.name}</span>
+                <span class="item-name">
+                  ${item.name}
+                  ${item.multiplier ? ` (x${item.multiplier})` : ""}
+                </span>
                 <img src="${item.image}" 
                      alt="${item.name}"
                      class="item-thumb"
@@ -571,9 +574,9 @@ function applyFilters() {
 
       function exportItemsToStorage() {
     const items = ITEMS.map(item => {
-        const totalValue = Math.round(
-            (Math.pow(item.rarity, 3) * Math.pow(item.power, 1.5)) / 1000
-        );
+        const baseValue = (Math.pow(item.rarity, 3) * Math.pow(item.power, 1.5)) / 1000;
+        const multiplier = item.multiplier || 1;
+        const totalValue = Math.round(baseValue * multiplier);
 
         return {
             ...item,
@@ -628,6 +631,7 @@ function searchTable() {
     </div>
 </body>
 </html> 
+
 
 
 
