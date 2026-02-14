@@ -223,8 +223,8 @@
     th:nth-child(3), td:nth-child(3) { width: 100px; }
     th:nth-child(4), td:nth-child(4) { width: 100px; text-align: right; }
     th:nth-child(5), td:nth-child(5) { width: 150px; text-align: right; }
-    th:nth-child(6), td:nth-child(6) { width: 160px; text-align: right; }
-    th:nth-child(7), td:nth-child(7) { width: 120px; text-align: center;}
+    th:nth-child(6), td:nth-child(6) { width: 120px; text-align: center; }
+    th:nth-child(7), td:nth-child(7) { width: 160px; text-align: right; }
 
     .credits {
       margin-top: 14px;
@@ -439,8 +439,8 @@
         <th>Type</th>
         <th>Rarity</th>
         <th>Power / Usage</th>
-        <th>Total Value</th>
         <th>Multiplier</th>
+        <th>Total Value</th>
     </tr>
         </thead>
     <tbody id="tableBody">
@@ -499,8 +499,8 @@ function generateTable() {
         <td>${item.type}</td>
         <td>${item.rarity}</td>
         <td>${item.power}</td>
-        <td>${totalValue.toLocaleString()}</td>
         <td>x${multiplier}</td>
+        <td>${totalValue.toLocaleString()}</td>
     `;
 
         tbody.appendChild(row);
@@ -631,6 +631,7 @@ function searchTable() {
     </div>
 </body>
 </html> 
+
 
 
 
