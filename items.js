@@ -101,9 +101,7 @@ const ITEMS = [
   { name: "Trench Shotgun", type: "Weapon", rarity: 20, power: 23, image: "images/trench_shotgun.jpg" },
   { name: "Clown Grenade", type: "Weapon", rarity: 20, power: 18, image: "images/clown_grenade.jpg" },
   { name: "Radio Bomb", type: "Weapon", rarity: 21, power: 18, image: "images/radio_bomb.jpg" },
-  { name: "Grenade", type: "Weapon", rarity: 5, power: 18, image: "images/grenade.jpg" },
   { name: "Donkey Gun", type: "Weapon", rarity: 19, power: 20, image: "images/donkey_gun.jpg" },
-  { name: "Proximity Mine", type: "Weapon", rarity: 7, power: 18, image: "images/proximity_mine.jpg" },
   { name: "Squid Hammer", type: "Weapon", rarity: 24, power: 12, image: "images/squid_hammer.jpg" },
   { name: "Bubble Gun", type: "Weapon", rarity: 22, power: 33, image: "images/bubble_gun.jpg" },
   { name: "Gingerbread Box", type: "Tool", rarity: 22, power: 20, image: "images/gingerbread_box.jpg" },
@@ -135,13 +133,10 @@ const ITEMS = [
   { name: "Pencil Crossbow", type: "Weapon", rarity: 25, power: 13, image: "images/pencil_crossbow.jpg" },
   { name: "Toaster Pistol", type: "Weapon", rarity: 26, power: 16, image: "images/toaster_pistol.jpg" },
   { name: "Ruler", type: "Weapon", rarity: 29, power: 12, image: "images/ruler.jpg" },
-  { name: "Single Shooter", type: "Weapon", rarity: 3, power: 20, image: "images/single_shooter.jpg" },
   { name: "Burger", type: "Tool", rarity: 26, power: 12, image: "images/burger.jpg" },
   { name: "Skull Minigun", type: "Weapon", rarity: 30, power: 36, image: "images/skull_minigun.jpg" },
   { name: "Ogre Gun", type: "Weapon", rarity: 33, power: 14, image: "images/ogre_gun.jpg" },
   { name: "Energy Grenade", type: "Weapon", rarity: 30, power: 18, image: "images/energy_grenade.jpg" },
-  { name: "Rocket Launcher", type: "Weapon", rarity: 7, power: 43, image: "images/rocket_launcher.jpg" },
-  { name: "Ray Gun", type: "Weapon", rarity: 7, power: 43, image: "images/ray_gun.jpg" },
   { name: "Waffle Box", type: "Tool", rarity: 45, power: 25, image: "images/waffle_box.jpg" },
   { name: "Pumpkin Slinger", type: "Weapon", rarity: 29, power: 20, image: "images/pumpkin_slinger.jpg" },
   { name: "Wack Broom", type: "Weapon", rarity: 29, power: 12, image: "images/wack_broom.jpg" },
@@ -155,7 +150,6 @@ const ITEMS = [
   { name: "Squid Rifle", type: "Weapon", rarity: 37, power: 18, image: "images/squid_rifle.jpg" },
   { name: "Ticket Gun", type: "Weapon", rarity: 39, power: 20, image: "images/ticket_gun.jpg" },
   { name: "CandyCane Minigun", type: "Weapon", rarity: 40, power: 36, image: "images/candycane_minigun.jpg" },
-  { name: "Nuke", type: "Tool", rarity: 9, power: 100, image: "images/nuke.jpg" },
   { name: "Pumpkin Launcher", type: "Weapon", rarity: 42, power: 50, image: "images/pumpkin_launcher.jpg" },
   { name: "Motorcycle", type: "Tool", rarity: 43, power: 30, image: "images/motorcycle.jpg" },
   { name: "Dark Sword", type: "Weapon", rarity: 43, power: 12, image: "images/dark_sword.jpg" },
@@ -202,4 +196,5 @@ const ITEMS = [
   { name: "Liberty Launcher", type: "Weapon", rarity: 100, power: 45, image: "images/LL.jpg" },
   { name: "Boombox", type: "Tool", rarity: 0, power: 5, image: "images/boombox.jpg" }
 ];
+
 
