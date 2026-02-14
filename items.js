@@ -142,7 +142,7 @@ const ITEMS = [
   { name: "Energy Grenade", type: "Weapon", rarity: 30, power: 18, image: "images/energy_grenade.jpg" },
   { name: "Rocket Launcher", type: "Weapon", rarity: 7, power: 43, image: "images/rocket_launcher.jpg" },
   { name: "Ray Gun", type: "Weapon", rarity: 7, power: 43, image: "images/ray_gun.jpg" },
-  { name: "Waffle Box", type: "Tool", rarity: 37, power: 25, image: "images/waffle_box.jpg" },
+  { name: "Waffle Box", type: "Tool", rarity: 45, power: 25, image: "images/waffle_box.jpg" },
   { name: "Pumpkin Slinger", type: "Weapon", rarity: 29, power: 20, image: "images/pumpkin_slinger.jpg" },
   { name: "Wack Broom", type: "Weapon", rarity: 29, power: 12, image: "images/wack_broom.jpg" },
   { name: "Skull Crusher", type: "Weapon", rarity: 30, power: 12, image: "images/skull_crusher.jpg" },
@@ -159,7 +159,7 @@ const ITEMS = [
   { name: "Pumpkin Launcher", type: "Weapon", rarity: 42, power: 50, image: "images/pumpkin_launcher.jpg" },
   { name: "Motorcycle", type: "Tool", rarity: 43, power: 30, image: "images/motorcycle.jpg" },
   { name: "Dark Sword", type: "Weapon", rarity: 43, power: 12, image: "images/dark_sword.jpg" },
-  { name: "Enchanted Box", type: "Tool", rarity: 45, power: 20, image: "images/enchanted_box.jpg" },
+  { name: "Enchanted Box", type: "Tool", rarity: 38, power: 20, image: "images/enchanted_box.jpg" },
   { name: "JackoBox T2", type: "Tool", rarity: 43, power: 10, image: "images/jackobox_T2.jpg" },
   { name: "Uncle Sam", type: "Weapon", rarity: 50, power: 36, image: "images/uncle_sam.jpg" },
   { name: "Firework Pistol", type: "Weapon", rarity: 52, power: 24, image: "images/firework_pistol.jpg" },
@@ -202,3 +202,4 @@ const ITEMS = [
   { name: "Liberty Launcher", type: "Weapon", rarity: 100, power: 45, image: "images/LL.jpg" },
   { name: "Boombox", type: "Tool", rarity: 0, power: 5, image: "images/boombox.jpg" }
 ];
+
