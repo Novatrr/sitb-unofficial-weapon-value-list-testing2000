@@ -224,6 +224,7 @@
     th:nth-child(4), td:nth-child(4) { width: 100px; text-align: right; }
     th:nth-child(5), td:nth-child(5) { width: 150px; text-align: right; }
     th:nth-child(6), td:nth-child(6) { width: 160px; text-align: right; }
+    th:nth-child(7), td:nth-child(7) { width: 120px; text-align: center;}
 
     .credits {
       margin-top: 14px;
@@ -439,11 +440,12 @@
         <th>Rarity</th>
         <th>Power / Usage</th>
         <th>Total Value</th>
+        <th>Multiplier</th>
     </tr>
         </thead>
     <tbody id="tableBody">
     <tr id="noResultsRow" style="display: none;">
-    <td colspan="6" style="text-align: center; padding: 30px; font-style: italic; color: #6a8f3a;">
+    <td colspan="7" style="text-align: center; padding: 30px; font-style: italic; color: #6a8f3a;">
         No items found.
     </td>
     </tr>
@@ -476,7 +478,7 @@ function generateTable() {
     ITEMS.forEach((item, index) => {
 
         const baseValue = (Math.pow(item.rarity, 3) * Math.pow(item.power, 1.5)) / 1000;
-        const multiplier = item.multiplier || 1;
+        const multiplier = item.multiplier ?? 1;
         const totalValue = Math.round(baseValue * multiplier);
 
         const row = document.createElement("tr");
@@ -486,22 +488,20 @@ function generateTable() {
         row.dataset.rarity = item.rarity;
 
         row.innerHTML = `
-            <td>#</td>
-            <td class="item-cell">
-                <span class="item-name">
-                  ${item.name}
-                  ${item.multiplier ? ` (x${item.multiplier})` : ""}
-                </span>
-                <img src="${item.image}" 
-                     alt="${item.name}"
-                     class="item-thumb"
-                     onclick="openImage(this.src)">
-            </td>
-            <td>${item.type}</td>
-            <td>${item.rarity}</td>
-            <td>${item.power}</td>
-            <td>${totalValue.toLocaleString()}</td>
-        `;
+        <td>#</td>
+        <td class="item-cell">
+            <span class="item-name">${item.name}</span>
+            <img src="${item.image}" 
+                 alt="${item.name}"
+                 class="item-thumb"
+                 onclick="openImage(this.src)">
+        </td>
+        <td>${item.type}</td>
+        <td>${item.rarity}</td>
+        <td>${item.power}</td>
+        <td>${totalValue.toLocaleString()}</td>
+        <td>x${multiplier}</td>
+    `;
 
         tbody.appendChild(row);
     });
@@ -575,7 +575,7 @@ function applyFilters() {
       function exportItemsToStorage() {
     const items = ITEMS.map(item => {
         const baseValue = (Math.pow(item.rarity, 3) * Math.pow(item.power, 1.5)) / 1000;
-        const multiplier = item.multiplier || 1;
+        const multiplier = item.multiplier ?? 1;
         const totalValue = Math.round(baseValue * multiplier);
 
         return {
@@ -631,6 +631,7 @@ function searchTable() {
     </div>
 </body>
 </html> 
+
 
 
 
