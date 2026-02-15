@@ -366,7 +366,7 @@ function updateResult() {
 
         div.onclick = () => {
 
-          const baseValue = (Math.pow(i.rarity, 2) * Math.pow(i.power, 2)) / 100;
+          const baseValue = (Math.pow(i.rarity, 3) * Math.pow(i.power, 2.5)) / 100000;
           const multiplier = i.multiplier ?? 1;
           const computedValue = Math.round(baseValue * multiplier);
 
